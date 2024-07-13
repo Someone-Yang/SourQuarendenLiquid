@@ -1,35 +1,35 @@
 <ul class="mdui-list">
-  {% if details %}
-  <li class="mdui-list-item mdui-ripple">
+  {% if globalDetails["status"] %}
+  <li class="mdui-list-item mdui-ripple" onclick="location='/sqlite'">
     <i class="mdui-list-item-icon mdui-icon material-icons">move_to_inbox</i>
     <div class="mdui-list-item-content">
       <div class="mdui-list-item-title mdui-list-item-one-line">开始工作</div>
-      <div class="mdui-list-item-text mdui-list-item-one-line">{{ working }}</div>
+      <div class="mdui-list-item-text mdui-list-item-one-line">{{ globalDetails["file"] }}</div>
     </div>
   </li>
   <li class="mdui-list-item mdui-ripple">
     <i class="mdui-list-item-icon mdui-icon material-icons">add</i>
     <div class="mdui-list-item-content">添加表</div>
   </li>
-  <li class="mdui-list-item mdui-ripple">
-    <i class="mdui-list-item-icon mdui-icon material-icons">data_usage</i>
-    <div class="mdui-list-item-content">SQLite 概览</div>
+  <li class="mdui-list-item mdui-ripple" onclick="location='/sqlite/runsql'">
+    <i class="mdui-list-item-icon mdui-icon material-icons">send</i>
+    <div class="mdui-list-item-content">运行语句</div>
   </li>
   <li class="mdui-list-item mdui-ripple">
     <i class="mdui-list-item-icon mdui-icon material-icons">search</i>
     <div class="mdui-list-item-content">全局查询</div>
   </li>
   {% else %}
-  <li class="mdui-list-item mdui-ripple">
-    <i class="mdui-list-item-icon mdui-icon material-icons">star</i>
+  <li class="mdui-list-item mdui-ripple" onclick="location='/sqlite'">
+    <i class="mdui-list-item-icon mdui-icon material-icons">move_to_inbox</i>
     <div class="mdui-list-item-content">开始工作</div>
   </li>
   {% endif %}
-  {% if details %}
-  <li class="mdui-subheader">数据表({{ tablesLen }})</li>
-    {% if tablesLen > 0 %}
-      {% for table in tables %}
-        <li class="mdui-list-item mdui-ripple">
+  {% if globalDetails["status"] %}
+  <li class="mdui-subheader">数据表({{ globalDetails["tablesLen"] }})</li>
+    {% if globalDetails["tablesLen"] > 0 %}
+      {% for table in globalDetails["tables"] %}
+        <li class="mdui-list-item mdui-ripple" onclick="location='/sqlite/table/{{ table[0] }}/1'">
           <i class="mdui-list-item-icon mdui-icon material-icons">view_list</i>
           <div class="mdui-list-item-content">
             <div class="mdui-list-item-title mdui-list-item-one-line">{{ table[0] }}</div>

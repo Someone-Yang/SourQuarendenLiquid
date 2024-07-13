@@ -37,7 +37,7 @@ def index():
   if request.form.get("sqlite_file"):
     session["sqlite_file"] = request.form.get("sqlite_file")
   dbTest = universalTest()
-  return render_template("sqlite/index.html",working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+  return render_template("sqlite/index.html",globalDetails=dbTest)
 
   
 @webSqlite.route("/runsql",methods=["GET","POST"])
@@ -50,14 +50,36 @@ def runsql():
       cur = conn.cursor()
       try:
         cur.execute(sql_command)
+        conn.commit()
         cur.close()
         conn.close()
         dbTest = universalTest()
       except BaseException as e:
-        return render_template("sqlite/runsql.html",status=1,msg=e,sql_command=sql_command,working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+        return render_template("sqlite/runsql.html",status=1,msg=e,sql_command=sql_command,globalDetails=dbTest)
       else:
-        return render_template("sqlite/runsql.html",status=0,sql_command=sql_command,working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+        return render_template("sqlite/runsql.html",status=0,sql_command=sql_command,globalDetails=dbTest)
     else:
-      return render_template("sqlite/runsql.html",status=1,working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+      return render_template("sqlite/runsql.html",status=1,globalDetails=dbTest)
   else:
-    return render_template("sqlite/runsql.html",status=1,working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+    return render_template("sqlite/runsql.html",status=1,globalDetails=dbTest)
+  
+@webSqlite.route("/table/<tableName>/<page>",methods=["GET","POST"])
+def viewTable(tableName,page):
+  dbTest = universalTest()
+  if dbTest["status"]:
+    selectedTable = tableName
+    conn = sqlite3.connect(dbTest["file"])
+    cur = conn.cursor()
+    try:
+      cur.execute("PRAGMA table_info(%s)" % (selectedTable))
+      columns = [column[1] for column in cur.fetchall()]
+      cur.execute("SELECT * FROM %s" % (selectedTable))
+      rows = cur.fetchall()
+      cur.close()
+      conn.close()
+      print(rows)
+      return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,rows=rows,columns=columns,globalDetails=dbTest)
+    except:
+      return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,globalDetails=dbTest)
+  else:
+    return render_template("sqlite/viewtable.html",status=1,globalDetails=dbTest)

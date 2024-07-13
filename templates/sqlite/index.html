@@ -18,7 +18,7 @@
 
 {% block content %}
 <form action="#" method="post">
-  <div class="mdui-row">
+  <div class="mdui-row mdui-p-y-1">
     <div class="mdui-col-xs-12">
       <div class="mdui-card">
         <div class="mdui-card-primary">
@@ -28,26 +28,27 @@
           <p>请选择一个数据库以开始工作。</p>
           <div class="mdui-textfield">
             <label class="mdui-textfield-label">SQLite 文件位置</label>
-            <input class="mdui-textfield-input" name="sqlite_file" id="sqlite_file" type="text" value="{{ working }}"/>
+            <input class="mdui-textfield-input" name="sqlite_file" id="sqlite_file" type="text" value="{{ globalDetails['file'] }}"/>
           </div>
         </div>
         <div class="mdui-card-actions">
-          <button class="mdui-btn mdui-float-right" type="submit">开始</button>
+          <button class="mdui-btn mdui-float-right mdui-btn-raised mdui-ripple mdui-color-theme" type="submit"><i class="mdui-icon material-icons">send</i> 载入或创建</button>
         </div>
       </div>
     </div>
   </div>
 </form>
 
-{% if details %}
-<div class="mdui-row">
+{% if globalDetails["status"] %}
+<div class="mdui-row mdui-p-y-1">
   <div class="mdui-col-xs-12">
     <div class="mdui-card">
       <div class="mdui-card-primary">
         <div class="mdui-card-primary-title">现在进行的工作</div>
       </div>
       <div class="mdui-card-content">
-        <p>{{ working }}</p>
+        <p><strong>已载入的数据库：</strong>{{ globalDetails['file'] }}</p>
+        <p><strong>数据表总数：</strong>{{ globalDetails['tablesLen'] }}</p>
       </div>
     </div>
   </div>

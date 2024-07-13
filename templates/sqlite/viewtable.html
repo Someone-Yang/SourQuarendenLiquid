@@ -1,0 +1,60 @@
+{% extends "frame.html" %}
+
+{% block webTitle %}查看表{% endblock %}
+
+{% block appbarHeadline %}SQLite{% endblock %}
+
+{% block appbarTitle %}查看表：{{ selectedTable }}{% endblock %}
+
+{% block appbar_btns %}
+<a href="/" class="mdui-btn mdui-btn-icon">
+  <i class="mdui-icon material-icons">home</i>
+</a>
+{% endblock %}
+
+{% block left_drawer %}
+{% include "sqlite/drawer.html" %}
+{% endblock %}
+
+{% block content %}
+<form action="#" method="post">
+  <div class="mdui-row mdui-p-y-1">
+    <div class="mdui-col-xs-12">
+      <div class="mdui-card">
+        <div class="mdui-card-primary">
+          <div class="mdui-card-primary-title">{{ selectedTable }}</div>
+          <div class="mdui-card-primary-subtitle">查看表，第{{ page }}页</div>
+        </div>
+        <div class="mdui-card-content">
+
+          <div class="mdui-table-fluid">
+            <table class="mdui-table">
+              <thead>
+                <tr>
+                  {% for column in columns %}
+                  <th>{{ column }}</th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in rows %}
+                <tr>
+                  {% for item in row %}
+                  <td>{{ item }}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          
+        </div>
+        <div class="mdui-card-actions">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}
