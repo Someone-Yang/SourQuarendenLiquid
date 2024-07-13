@@ -9,8 +9,8 @@ def universalTest():
   sesFile = session.get("sqlite_file")
   if sesFile:
     print("SQLite in session, connecting to " + sesFile)
-    conTest = sqlite3.connect(sesFile)
     try:
+      conTest = sqlite3.connect(sesFile)
       print("Connection OK.")
       session["sqlite_file"] = sesFile
       try:
@@ -65,23 +65,32 @@ def runsql():
   else:
     return render_template("sqlite/runsql.html",status=1,globalDetails=dbTest)
   
-@webSqlite.route("/table/<tableName>/<page>",methods=["GET","POST"])
-def viewTable(tableName,page):
+@webSqlite.route("/table/<tableName>",methods=["GET","POST"])
+def viewTable(tableName):
   dbTest = universalTest()
   if dbTest["status"]:
     selectedTable = tableName
+    page = request.args.get("page",1)
+    exePage = page - 1
+    orderby = request.args.get("orderby",None)
+    fetchlimit = request.args.get("fetchlimit",10)
     conn = sqlite3.connect(dbTest["file"])
     cur = conn.cursor()
     try:
       cur.execute("PRAGMA table_info(%s)" % (selectedTable))
-      columns = [column[1] for column in cur.fetchall()]
-      cur.execute("SELECT * FROM %s" % (selectedTable))
+      columns = cur.fetchall()
+      baseExe = "SELECT * FROM %s" % (selectedTable)
+      if orderby:
+        baseExe = baseExe + " ORDER BY %s" % (orderby)
+      baseExe = baseExe + " LIMIT %s,%s" % (exePage * fetchlimit,fetchlimit)
+      print(baseExe)
+      cur.execute(baseExe)
       rows = cur.fetchall()
       cur.close()
       conn.close()
       print(rows)
-      return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,rows=rows,columns=columns,globalDetails=dbTest)
+      return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,fetchlimit=fetchlimit,rows=rows,columns=columns,globalDetails=dbTest)
     except:
-      return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,globalDetails=dbTest)
+      return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,fetchlimit=fetchlimit,globalDetails=dbTest)
   else:
     return render_template("sqlite/viewtable.html",status=1,globalDetails=dbTest)

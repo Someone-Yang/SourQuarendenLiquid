@@ -29,7 +29,7 @@
   <li class="mdui-subheader">数据表({{ globalDetails["tablesLen"] }})</li>
     {% if globalDetails["tablesLen"] > 0 %}
       {% for table in globalDetails["tables"] %}
-        <li class="mdui-list-item mdui-ripple" onclick="location='/sqlite/table/{{ table[0] }}/1'">
+        <li class="mdui-list-item mdui-ripple" onclick="location='/sqlite/table/{{ table[0] }}'">
           <i class="mdui-list-item-icon mdui-icon material-icons">view_list</i>
           <div class="mdui-list-item-content">
             <div class="mdui-list-item-title mdui-list-item-one-line">{{ table[0] }}</div>

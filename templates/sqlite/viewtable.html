@@ -32,7 +32,25 @@
               <thead>
                 <tr>
                   {% for column in columns %}
-                  <th>{{ column }}</th>
+                  <th>
+                    {% if column[5] == 1 %}
+                    <i class="mdui-icon material-icons mdui-text-color-theme-accent" mdui-tooltip="{content: '主键'}">beenhere</i>
+                    {% endif %}
+                    <span class="mdui-text-color-theme-accent" onclick="orderUrl('{{ column[1] }}')">{{ column[1] }}</span>
+                    <br>
+                    {% if column[2] == "TEXT" %}
+                    <i class="mdui-icon material-icons" mdui-tooltip="{content: '{{ column[2] }}'}">text_fields</i>
+                    {% elif column[2] == "INT" %}
+                    <i class="mdui-icon material-icons" mdui-tooltip="{content: '{{ column[2] }}'}">filter_6</i>
+                    {% elif column[2] == "REAL" %}
+                    <i class="mdui-icon material-icons" mdui-tooltip="{content: '{{ column[2] }}'}">inbox</i>
+                    {% else %}
+                    <i class="mdui-icon material-icons" mdui-tooltip="{content: '{{ column[2] }}'}">more</i>
+                    {% endif %}
+                    {% if column[3] == 1 %}
+                    <i class="mdui-icon material-icons mdui-text-color-green" mdui-tooltip="{content: '不可空'}">check_circle</i>
+                    {% endif %}
+                  </th>
                   {% endfor %}
                 </tr>
               </thead>
@@ -50,11 +68,24 @@
           
         </div>
         <div class="mdui-card-actions">
-          
+          第{{ page }}页，每页{{ fetchlimit }}条。
         </div>
       </div>
     </div>
   </div>
 </form>
+
+<script>
+function orderUrl(column_name) {
+  var urlParams = new URLSearchParams(window.location.search);
+  urlParams.set('orderby', column_name);
+  window.location.search = urlParams.toString();
+}
+function toPage(page) {
+  var urlParams = new URLSearchParams(window.location.search);
+  urlParams.set('page', page);
+  window.location.search = urlParams.toString();
+}
+</script>
 
 {% endblock %}
