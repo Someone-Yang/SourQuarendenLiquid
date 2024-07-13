@@ -1,0 +1,62 @@
+{% extends "frame.html" %}
+
+{% block webTitle %}运行{% endblock %}
+
+{% block appbarHeadline %}SQLite{% endblock %}
+
+{% block appbarTitle %}运行 SQL 语句{% endblock %}
+
+{% block left_drawer %}
+{% include "sqlite/drawer.html" %}
+{% endblock %}
+
+{% block content %}
+<form action="#" method="post">
+  <div class="mdui-row">
+    <div class="mdui-col-xs-12">
+      <div class="mdui-card">
+        <div class="mdui-card-primary">
+          <div class="mdui-card-primary-title">运行 SQL 语句</div>
+        </div>
+        {% if details %}
+        <div class="mdui-card-content">
+          <p>准备就绪在数据库 {{ working }} 中运行下列语句。</p>
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label">语句</label>
+            <textarea class="mdui-textfield-input" name="sql_command" id="sql_command" type="text"></textarea>
+          </div>
+        </div>
+        {% else %}
+        <div class="mdui-card-content">
+          <p>数据库未就绪。</p>
+        </div>
+        {% endif %}
+        <div class="mdui-card-actions">
+          <button class="mdui-btn mdui-float-right" type="submit">开始</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% if sql_command %}
+<div class="mdui-row">
+  <div class="mdui-col-xs-12">
+    <div class="mdui-card">
+      <div class="mdui-card-primary">
+        <div class="mdui-card-primary-title">运行结果</div>
+      </div>
+      <div class="mdui-card-content">
+        {% if status == 0 %}
+        <p>在数据库 {{ working }} 运行语句 {{ sql_command }} 成功！</p>
+        {% else %}
+        <p>在数据库 {{ working }} 运行语句 {{ sql_command }} 失败，错误信息：</p>
+        <p>{{ msg }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

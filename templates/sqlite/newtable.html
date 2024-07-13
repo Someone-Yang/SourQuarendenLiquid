@@ -1,10 +1,10 @@
 {% extends "frame.html" %}
 
-{% block webTitle %}开始 SQLite{% endblock %}
+{% block webTitle %}创建表{% endblock %}
 
 {% block appbarHeadline %}SQLite{% endblock %}
 
-{% block appbarTitle %}开始工作{% endblock %}
+{% block appbarTitle %}创建表{% endblock %}
 
 {% block appbar_btns %}
 <a href="/" class="mdui-btn mdui-btn-icon">
@@ -22,12 +22,12 @@
     <div class="mdui-col-xs-12">
       <div class="mdui-card">
         <div class="mdui-card-primary">
-          <div class="mdui-card-primary-title">开始 SQLite 工作</div>
+          <div class="mdui-card-primary-title">创建 SQLite 表</div>
         </div>
         <div class="mdui-card-content">
-          <p>请选择一个数据库以开始工作。</p>
+          <p>将在当前数据库中创建一个表。</p>
           <div class="mdui-textfield">
-            <label class="mdui-textfield-label">SQLite 文件位置</label>
+            <label class="mdui-textfield-label">表名</label>
             <input class="mdui-textfield-input" name="sqlite_file" id="sqlite_file" type="text" value="{{ working }}"/>
           </div>
         </div>
@@ -39,7 +39,7 @@
   </div>
 </form>
 
-{% if details %}
+{% if status == 0 %}
 <div class="mdui-row">
   <div class="mdui-col-xs-12">
     <div class="mdui-card">

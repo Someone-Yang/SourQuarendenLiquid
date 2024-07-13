@@ -1,5 +1,5 @@
 <ul class="mdui-list">
-  {% if status == 0 %}
+  {% if details %}
   <li class="mdui-list-item mdui-ripple">
     <i class="mdui-list-item-icon mdui-icon material-icons">move_to_inbox</i>
     <div class="mdui-list-item-content">
@@ -25,13 +25,16 @@
     <div class="mdui-list-item-content">开始工作</div>
   </li>
   {% endif %}
-  {% if status == 0 %}
+  {% if details %}
   <li class="mdui-subheader">数据表({{ tablesLen }})</li>
     {% if tablesLen > 0 %}
       {% for table in tables %}
         <li class="mdui-list-item mdui-ripple">
-          <i class="mdui-list-item-icon mdui-icon material-icons">drafts</i>
-          <div class="mdui-list-item-content">{{ table.name }}</div>
+          <i class="mdui-list-item-icon mdui-icon material-icons">view_list</i>
+          <div class="mdui-list-item-content">
+            <div class="mdui-list-item-title mdui-list-item-one-line">{{ table[0] }}</div>
+            <div class="mdui-list-item-text mdui-list-item-one-line">数据表{{ table[1] }}</div>
+          </div>
         </li>
       {% endfor %}
     {% else %}

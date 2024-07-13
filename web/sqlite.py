@@ -5,28 +5,59 @@ import sqlite3.test
 
 webSqlite = Blueprint("sqlite",__name__)
 
-@webSqlite.route("/",methods=["GET","POST"])
-def index():
-  if request.form.get("sqlite_file"):
-    session["sqlite_file"] = request.form.get("sqlite_file")
+def universalTest():
   sesFile = session.get("sqlite_file")
   if sesFile:
     print("SQLite in session, connecting to " + sesFile)
     conTest = sqlite3.connect(sesFile)
-    if conTest:
+    try:
       print("Connection OK.")
       session["sqlite_file"] = sesFile
-      cur = conTest.cursor()
-      cur.execute("select name from sqlite_master where type='table' order by name")
-      tables = cur.fetchall()
-      print("Tables:")
-      print(tables)
-      return render_template("sqlite/index.html",status=0,working=sesFile,tables=tables,tablesLen=len(tables))
-    else:
+      try:
+        cur = conTest.cursor()
+        cur.execute("select name,rootpage from sqlite_master where type='table' order by name")
+        tables = cur.fetchall()
+        cur.close()
+        conTest.close()
+        return {"status":True,"file":sesFile,"tables":tables,"tablesLen":len(tables)}
+      except BaseException as e:
+        cur.close()
+        conTest.close()
+        return {"status":False,"file":sesFile,"error":e}
+    except:
       print("Bad connection.")
       session.pop("sqlite_file",None)
-      return render_template("sqlite/index.html",status=2)
+      return {"status":False}
   else:
     print("No SQLite in session")
-    return render_template("sqlite/index.html",status=1)
+    return {"status":False}
+
+@webSqlite.route("/",methods=["GET","POST"])
+def index():
+  if request.form.get("sqlite_file"):
+    session["sqlite_file"] = request.form.get("sqlite_file")
+  dbTest = universalTest()
+  return render_template("sqlite/index.html",working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+
   
+@webSqlite.route("/runsql",methods=["GET","POST"])
+def runsql():
+  dbTest = universalTest()
+  if dbTest["status"]:
+    sql_command = request.form.get("sql_command")
+    if sql_command:
+      conn = sqlite3.connect(dbTest["file"])
+      cur = conn.cursor()
+      try:
+        cur.execute(sql_command)
+        cur.close()
+        conn.close()
+        dbTest = universalTest()
+      except BaseException as e:
+        return render_template("sqlite/runsql.html",status=1,msg=e,sql_command=sql_command,working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+      else:
+        return render_template("sqlite/runsql.html",status=0,sql_command=sql_command,working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+    else:
+      return render_template("sqlite/runsql.html",status=1,working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
+  else:
+    return render_template("sqlite/runsql.html",status=1,working=dbTest["file"],tables=dbTest["tables"],tablesLen=dbTest["tablesLen"],details=dbTest["status"])
