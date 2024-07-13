@@ -1,0 +1,70 @@
+{% extends "frame.html" %}
+
+{% block webTitle %}开始 SQLite{% endblock %}
+
+{% block appbarHeadline %}SQLite{% endblock %}
+
+{% block appbarTitle %}开始工作{% endblock %}
+
+{% block appbar_btns %}
+<a href="/" class="mdui-btn mdui-btn-icon">
+  <i class="mdui-icon material-icons">home</i>
+</a>
+{% endblock %}
+
+{% block left_drawer %}
+{% include "sqlite/drawer.html" %}
+{% endblock %}
+
+{% block content %}
+<form action="#" method="post">
+  <div class="mdui-row">
+    <div class="mdui-col-xs-12">
+      <div class="mdui-card">
+        <div class="mdui-card-primary">
+          <div class="mdui-card-primary-title">开始 SQLite 工作</div>
+        </div>
+        <div class="mdui-card-content">
+          <p>请选择一个数据库以开始工作。</p>
+          <div class="mdui-textfield">
+            <label class="mdui-textfield-label">SQLite 文件位置</label>
+            <input class="mdui-textfield-input" name="sqlite_file" id="sqlite_file" type="text" value="{{ working }}"/>
+          </div>
+        </div>
+        <div class="mdui-card-actions">
+          <button class="mdui-btn mdui-float-right" type="submit">开始</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% if status == 0 %}
+<div class="mdui-row">
+  <div class="mdui-col-xs-12">
+    <div class="mdui-card">
+      <div class="mdui-card-primary">
+        <div class="mdui-card-primary-title">现在进行的工作</div>
+      </div>
+      <div class="mdui-card-content">
+        <p>{{ working }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="mdui-row">
+  <div class="mdui-col-xs-12">
+    <div class="mdui-card">
+      <div class="mdui-card-primary">
+        <div class="mdui-card-primary-title">当前没有正在进行的工作</div>
+      </div>
+      <div class="mdui-card-content">
+        <p>如果您选定一个 SQLite 数据库并成功打开，数据库的信息会显示在这里。</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
