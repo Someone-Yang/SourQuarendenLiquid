@@ -49,7 +49,7 @@ def runsql():
       conn = sqlite3.connect(dbTest["file"])
       cur = conn.cursor()
       try:
-        cur.execute(sql_command)
+        cur.executescript(sql_command)
         tresults = cur.fetchall()
         conn.commit()
         tchanges = conn.total_changes
@@ -89,7 +89,7 @@ def viewTable(tableName):
       cur.close()
       conn.close()
       print(rows)
-      return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,fetchlimit=fetchlimit,rows=rows,columns=columns,globalDetails=dbTest)
+      return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,fetchlimit=fetchlimit,rows=rows,columns=columns,orderby=orderby,globalDetails=dbTest)
     except:
       return render_template("sqlite/viewtable.html",status=1,selectedTable=selectedTable,page=page,fetchlimit=fetchlimit,globalDetails=dbTest)
   else:

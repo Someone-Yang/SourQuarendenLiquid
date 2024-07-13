@@ -33,10 +33,13 @@
                 <tr>
                   {% for column in columns %}
                   <th>
+                    <span class="mdui-text-color-theme-accent" onclick="orderUrl('{{ column[1] }}')">{{ column[1] }}</span>
                     {% if column[5] == 1 %}
                     <i class="mdui-icon material-icons mdui-text-color-theme-accent" mdui-tooltip="{content: '主键'}">beenhere</i>
                     {% endif %}
-                    <span class="mdui-text-color-theme-accent" onclick="orderUrl('{{ column[1] }}')">{{ column[1] }}</span>
+                    {% if column[1] == orderby %}
+                    <i class="mdui-icon material-icons mdui-text-color-theme-accent" mdui-tooltip="{content: '输出由此列排序'}">arrow_downward</i>
+                    {% endif %}
                     <br>
                     {% if column[2] == "TEXT" %}
                     <i class="mdui-icon material-icons" mdui-tooltip="{content: '{{ column[2] }}'}">text_fields</i>

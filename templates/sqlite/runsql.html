@@ -48,12 +48,12 @@
       </div>
       <div class="mdui-card-content">
         {% if status == 0 %}
-        <p>在数据库 {{ globalDetails["file"] }} 运行语句 {{ sql_command }} 成功！</p>
+        <p class="mdui-text-color-green">在数据库 {{ globalDetails["file"] }} 运行语句 {{ sql_command }} 成功！</p>
         <p><strong>{{ tchanges }} 行</strong>受到影响。</p>
         <p><strong>最后输出：</strong></p>
         <p>{{ tresults }}</p>
         {% else %}
-        <p>在数据库 {{ globalDetails["file"] }} 运行语句 {{ sql_command }} 失败，错误信息：</p>
+        <p class="mdui-text-color-red">在数据库 {{ globalDetails["file"] }} 运行语句 {{ sql_command }} 失败，错误信息：</p>
         <p>{{ msg }}</p>
         {% endif %}
       </div>
