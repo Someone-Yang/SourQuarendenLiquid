@@ -50,14 +50,16 @@ def runsql():
       cur = conn.cursor()
       try:
         cur.execute(sql_command)
+        tresults = cur.fetchall()
         conn.commit()
+        tchanges = conn.total_changes
         cur.close()
         conn.close()
         dbTest = universalTest()
       except BaseException as e:
         return render_template("sqlite/runsql.html",status=1,msg=e,sql_command=sql_command,globalDetails=dbTest)
       else:
-        return render_template("sqlite/runsql.html",status=0,sql_command=sql_command,globalDetails=dbTest)
+        return render_template("sqlite/runsql.html",status=0,sql_command=sql_command,tchanges=tchanges,tresults=tresults,globalDetails=dbTest)
     else:
       return render_template("sqlite/runsql.html",status=1,globalDetails=dbTest)
   else:
