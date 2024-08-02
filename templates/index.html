@@ -12,6 +12,10 @@
 </a>
 {% endblock %}
 
+{% block left_drawer %}
+{% include "drawer.html" %}
+{% endblock %}
+
 {% block content %}
 <div class="mdui-row">
   <div class="mdui-col-xs-12">
@@ -21,13 +25,6 @@
       </div>
       <div class="mdui-card-content">
         酸苹果汁（<strong>S</strong>our <strong>Q</strong>uarenden <strong>L</strong>iquid）是一个为自己做的小工具，主要用于快速查看某些神奇数据库的内容。
-      </div>
-      <div class="mdui-card-actions">
-        <button class="mdui-btn mdui-ripple">action 1</button>
-        <button class="mdui-btn mdui-ripple">action 2</button>
-        <button class="mdui-btn mdui-btn-icon mdui-float-right">
-          <i class="mdui-icon material-icons">expand_more</i>
-        </button>
       </div>
     </div>
   </div>
